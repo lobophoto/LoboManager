@@ -20,6 +20,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/', express.static(path.join(__dirname, 'static')));
+
 
 app.use('/api',upload.array('file'), indexRouter);
 app.use('/api/public/', express.static(path.join(config.baseDir, config.dir, './src/public')));
