@@ -70,6 +70,7 @@ router.post('/image', (req, res) => {
   const { folder } = req.query;
   const files = req.files;
   let { images } = req.body;
+  console.log(images);
   if(!folder){
     return res.send({
       state: 'error',
@@ -77,6 +78,14 @@ router.post('/image', (req, res) => {
     })
   }
   
+  if(typeof images === 'string'){
+    try{
+      images = JSON.parse(images);
+    }catch(e){
+      console.log(e);
+    }
+  }
+
   if(!images || images.constructor !== Array){
     images = [];
   }
@@ -100,8 +109,6 @@ router.post('/image', (req, res) => {
   const config = getConfig();
   // 计算diff，删除图片
   const diff = _.difference(config.folders[folder], images);
-  console.log(diff);
-  console.log(config.folders[folder], images);
   _.each(diff, (img) => {
     fs.unlinkSync(path.join(allConfig.baseDir, allConfig.dir, './src/public/', img));
   });
