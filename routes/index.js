@@ -110,7 +110,11 @@ router.post('/image', (req, res) => {
   // 计算diff，删除图片
   const diff = _.difference(config.folders[folder], images);
   _.each(diff, (img) => {
-    fs.unlinkSync(path.join(allConfig.baseDir, allConfig.dir, './src/public/', img));
+    try{
+      fs.unlinkSync(path.join(allConfig.baseDir, allConfig.dir, './src/public/', img));
+    }catch(e){
+      console.log(e);
+    }
   });
 
   config.folders[folder] = images;
