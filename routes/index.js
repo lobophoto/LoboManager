@@ -114,8 +114,32 @@ router.post('/image', (req, res) => {
 });
 
 
+// 删除一个folder
 router.delete('/folder', (req, res) => {
-  
+  const { folder } = req.query;
+  if(!folder){
+    return res.send({
+      state: 'error',
+      message: '缺少folder'
+    });
+  }
+
+  const config = getConfig();
+  // 删除folder下的图片
+  const folders = config.folders[folder];
+  _.each(folders, (img) => {
+    try{
+      fs.unlinkSync(
+        path.join(allConfig.baseDir, allConfig.dir, './src/public/', img)
+      );
+    }catch(e){
+      console.log(e);
+    }
+  });
+  delete config.folders[folder];
+  res.send({
+    state: 'success'
+  });
 });
 
 // 发布
