@@ -137,6 +137,7 @@ router.delete('/folder', (req, res) => {
     }
   });
   delete config.folders[folder];
+  setConfig(config);
   res.send({
     state: 'success'
   });
