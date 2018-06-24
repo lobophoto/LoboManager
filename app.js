@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var multer = require('multer');
 var upload = multer({ dest: '/tmp/app_files' });
+var config = require('./config');
 
 var indexRouter = require('./routes/index');
 
@@ -21,6 +22,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api',upload.array('file'), indexRouter);
+app.use('/api/public/', express.static(path.join(config.baseDir, config.dir, './src/public')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
