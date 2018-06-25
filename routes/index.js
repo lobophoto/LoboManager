@@ -168,7 +168,24 @@ router.get('/publish', (req, res) => {
   }
   res.send({
     state: 'success'
-  })
+  });
 });
+
+// 恢复之前设置
+router.get('/reset', (req, res) => {
+  const command = `cd ${path.join(config.baseDir, config.dir)} && git reset HEAD --hard`;
+  try{
+    const output = execSync(command).toString();
+    console.log(output);
+  }catch(e){
+    res.send({
+      state: 'error',
+      message: '执行命令: '  + command + '失败'
+    });
+  }
+  res.send({
+    state: 'success'
+  });  
+})
 
 module.exports = router;
